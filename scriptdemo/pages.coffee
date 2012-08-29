@@ -41,9 +41,9 @@ saveSelectedImage2 = ->
 
 	 if links.length > 0
 		 re = prompt "部分数据供参考：\n #{list} \n输入正则..."
-		 return if note re.trim()
+		 return if not re.trim()
 
-	 re = new RegExp(re)
+	 re = new RegExp(re,"g")
 	 links.forEach (link) -> re.test link && fileapp.save_image link
 	
 saveSelectedImage = (evalFlg) ->
@@ -87,7 +87,7 @@ this.openSelectionLinks2 = ->
 		re = prompt("部分数据供参考：\n #{list} \n输入正则...", "")
 		return if not re.trim()
 				
-	re = new RegExp(re)
+	re = new RegExp(re,"g")
 	checked={}
 	links.forEach (link)->
 		re.test(link)  && !checked[link] && gBrowser.addTab(link)

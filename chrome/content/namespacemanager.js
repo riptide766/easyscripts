@@ -54,7 +54,7 @@ with(window.snippet.lib) {
 
 		this.extKeyword = function(code) {
 			for (var key in cache) {
-				if (/easyscripts\_.*/.test(key)) {
+				if (/easyscript\_.*/.test(key)) {
 					var shortKey = key.split("_")[1]
 					var re = new RegExp("([^[0-9a-zA-Z\s\_])" + shortKey + "([^0-9a-zA-Z\s\_])", "g")
 					code = code.replace(re, "$1" + key + "$2")

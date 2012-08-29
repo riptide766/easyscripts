@@ -41,3 +41,17 @@ easyscript_fileapp =
 
 	save_image: (url) -> saveImageURL(url, 0, 0, 0, 1)
 
+
+	get_file: (path) ->
+		localFile = easyscript_app.ccc("nsILocalFile")
+		localFile.initWithPath(path)
+		localFile
+
+	exec_cmd: (cmd, args) ->
+		processor = easyscript_app.ccc("nsIProcess")
+		if typeof cmd == "string"
+			cmd = easyscript_fileapp.get_file(cmd)
+		processor.init(cmd)
+		processor.run(false, args, args.length)
+
+

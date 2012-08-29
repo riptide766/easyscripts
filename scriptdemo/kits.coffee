@@ -13,17 +13,10 @@ this.restartBrowser = ->
 	Services.appinfo.invalidateCachesOnRestart() || Application.restart()
 
 
-# 对象的方式，需要实现process
 this.openProfileDirectory = ->
-	process: ->
-		if app.get_os() == "Linux"
-			currProfD = Services.dirsvc.get("ProfD", Ci.nsIFile)
-			profileDir = currProfD.path
-			cmd = app.getAFile("/usr/bin/thunar")
-			app.executeCmd(cmd, [profileDir])
-		else
-			prop = app.ccs("nsIProperties")
-			prop.get("ProfD", Ci.nsILocalFile).launch()
+		currProfD = Services.dirsvc.get("ProfD", Ci.nsIFile)
+		profileDir = currProfD.path
+		fileapp.exec_cmd("/usr/bin/thunar", [profileDir])
 	
 	
 

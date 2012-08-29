@@ -6,15 +6,14 @@
 				   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
 		  		   em:type="2"
                    em:minVersion="4.0"
-                   em:maxVersion="15.0a1" />
+                   em:maxVersion="17.0a1" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="easyscripts@mattmonkey"
                    em:name="easyscripts"
 				   em:version="0.1"
                    em:creator="mattmonkey"
-                   em:description=""
-                   em:homepageURL="https://github.com/mattmonkey/CtrlCtrl"
-                   em:optionsURL="chrome://ctrlctrl/content/options.xul">
+                   em:description="javascript和coffeescript写firefox脚本"
+				   em:homepageURL="https://github.com/riptide766/easyscripts">
     <em:targetApplication RDF:resource="rdf:#$tv5tO2"/>
   </RDF:Description>
 </RDF:RDF>

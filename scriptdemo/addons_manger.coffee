@@ -19,7 +19,7 @@ getAddonsList = ->
 		
 		rslt = "#{rslt}\n\n共安装各类扩展,插件,主题共#{addons.length}个;\n其中扩展#{cnt2} 个,启用扩展#{cnt}个"
 		clip.simple_copy rslt
-		alert "done"
+		alert "#{rslt}\ndone"
 
 switchRestartless = ->
 	Components.utils.import("resource://gre/modules/AddonManager.jsm")
