@@ -1,0 +1,4 @@
+content snippet chrome/content/
+skin snippet classic/1.0 chrome/skin/
+locale snippet en-US chrome/locale/en-US/
+overlay   chrome://browser/content/browser.xul   chrome://snippet/content/overlay.xul

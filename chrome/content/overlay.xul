@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script src="lib.js" type="application/x-javascript"/>
+	<script src="errors.js" type="application/x-javascript"/>
+	<script src="menu.js" type="application/x-javascript"/>
+	<script src="scriptbean.js" type="application/x-javascript"/>
+	<script src="scriptcompiler.js" type="application/x-javascript"/>
+	<script src="namespacemanager.js" type="application/x-javascript"/>
+	<script src="scriptmanager.js" type="application/x-javascript"/>
+	<script src="core.js" type="application/x-javascript"/>
+
+	<!-- 右键菜单 -->
+	<menupopup id="contentAreaContextMenu">
+		<menuitem id="snippet"  key="key_snippet" command="cmd_snippet"/>
+	</menupopup>
+
+	<!-- 菜单栏-工具菜单 -->
+	<menupopup id="menu_ToolsPopup">
+		<menuitem id="snippet"  key="key_snippet" command="cmd_snippet"/>
+	</menupopup>
+
+	<!-- 快捷键 - 调用独立提示窗口  -->
+	<keyset>
+		<key id="key_snippet" modifiers="accel" key="e" command="cmd_snippet"/>
+	</keyset>
+
+	<commandset>
+		 <command id="cmd_snippet" label="Exec snippit..." accesskey="s" oncommand="new window.snippet.core()"/>
+	 </commandset>
+</overlay>
