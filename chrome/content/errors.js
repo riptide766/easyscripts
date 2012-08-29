@@ -22,8 +22,11 @@ with(window.snippet.lib) {
 		return this.linenum
 	}
 
+	window.snippet.ErrorParser.prototype.msg_prefix = ""
+	window.snippet.ErrorParser.prototype.error = Error
+
 	window.snippet.ErrorParser.prototype.getError = function() {
-		return new Error(this.getMessage(), this.getFile(), this.getLineNum())
+		return new this.error(this.msg_prefix + this.getMessage(), this.getFile(), this.getLineNum())
 	}
 
 	window.snippet.ErrorParser.prototype.check = function() {
@@ -39,17 +42,19 @@ with(window.snippet.lib) {
 			this.file = errorinfos[0]
 			this.linenum = errorinfos[1]
 			this.message = error
+			this.error= SyntaxError
 		}
 	}
 
 	window.snippet.CoffeeErrorParser = function(error) {
 
-		if (startwith(error, "Error")) {
+		if (/Error/.test(error)) {
 			this.hasError = true
 			var error2 = substring2(error, "\n");
 			this.linenum = error2.replace(/.*line\ (\d*).*/g, "$1");
 			this.file = error2.replace(/.*In\ ([^,]*),.*/g, "$1");
 			this.message = error
+			this.error= SyntaxError
 		}
 	}
 
@@ -60,10 +65,17 @@ with(window.snippet.lib) {
 			this.linenum=null
 			this.message=error
 		}
+
+		this.getFile= function(){
+			return ""
+		}
+
+		this.msg_prefix =  "easyscript: "
 	}
 	
 	extendclass(snippet.JsErrorParser, snippet.ErrorParser);
 	extendclass(snippet.CoffeeErrorParser, snippet.ErrorParser);
+	extendclass(snippet.CommonErrorParser, snippet.ErrorParser);
 
 }
 

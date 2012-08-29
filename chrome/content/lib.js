@@ -6,7 +6,7 @@ if (!window.snippet) {
 window.snippet.lib = {
 	CC: Components.classes,
 	CI: Components.interfaces,
-	PREF_PREFIX:"extensions.easyscripts.",
+	PREF_PREFIX: "extensions.easyscripts.",
 
 	ccc: function(contract, inter) {
 		return this.CC[contract].createInstance(this.CI[inter]);
@@ -17,11 +17,17 @@ window.snippet.lib = {
 	},
 
 	log: function log() {
-		Application.console.log("easyscripts :: "+this.p.apply(null, arguments))
+		Application.console.log("easyscripts :: " + this.p.apply(null, arguments))
 	},
 
 	err: function err(error) {
-		throw error.getError();
+		try {
+			throw error.getError();
+		}finally {
+			if (this.getpref("alert_error", "false")) {
+				toJavaScriptConsole();
+			}
+		}
 	},
 
 	p: function p() {
@@ -29,7 +35,7 @@ window.snippet.lib = {
 		for (var i = 1; i < arguments.length; i++) {
 			pattern = pattern.replace("%" + i, arguments[i]);
 		}
-		return  pattern;
+		return pattern;
 	},
 
 	getfilecontent: function(file) {
@@ -70,8 +76,8 @@ window.snippet.lib = {
 		return str.substring(0, indx)
 	},
 
-	startwith:function(str,head){
-		return str.substring(0,head.length)==head
+	startwith: function(str, head) {
+		return str.substring(0, head.length) == head
 	},
 
 	getpref: function() {
@@ -82,15 +88,15 @@ window.snippet.lib = {
 		}
 	},
 
-    extendclass : function(subCls,superCls) {  
-        var sbp = subCls.prototype;  
-        subCls.prototype = new superCls();  
-        subCls.prototype.constructor = subCls;  
-        for(var atr in sbp) {  
-            subCls.prototype[atr] = sbp[atr];  
-        }  
-        subCls.supr = superCls;  
-    },
-	
+	extendclass: function(subCls, superCls) {
+		var sbp = subCls.prototype;
+		subCls.prototype = new superCls();
+		subCls.prototype.constructor = subCls;
+		for (var atr in sbp) {
+			subCls.prototype[atr] = sbp[atr];
+		}
+		subCls.supr = superCls;
+	},
+
 }
 

@@ -40,28 +40,29 @@ window.snippet.core = function(evt) {
 
 		function initialized() {
 			if (!snippet.__init) {
-				snippet.__init = true;
 				snippet.scriptmnger = new snippet.ScriptManager(getScriptDir());
 				snippet.scriptHelper = new snippet.ScriptHelper(snippet.scriptmnger);
 				snippet.nsHelper = new snippet.NamespacesHelper(new snippet.NamespacesManager())
 				snippet.anonymousscopes = {}
+				snippet.__init = true;
 			}
 
 		}
 
-		function getScriptDir(){
-			var dir = getpref("script_dir","Home,easyscripts").split(","),file;
-			if(dir.length==1){
+		function getScriptDir() {
+			var dir, file;
+			dir = getpref("script_dir", "Home,easyscripts").split(",")
+			if (dir.length == 1) {
 				file = getfile(dir[0])
 			}
-			if(dir.length>1){
-				file = getfile(dir[0],dir.slice(1));
+			if (dir.length > 1) {
+				file = getfile(dir[0], dir.slice(1));
 			}
-			if (file.isDirectory()){
+			if (!file || file.isDirectory()) {
 				return file
 			}
-			// TODO throw error
-		
+			err(new snippet.CommonErrorParser("没有发现有效的脚本目录"))
+
 		}
 
 		startup()

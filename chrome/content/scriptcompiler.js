@@ -17,14 +17,10 @@ with(window.snippet.lib) {
 		}
 
 		this.process = function(bean, type) {
-			try {
-				if (type == "js") {
-					this.checkSyntax(bean.path)
-				} else if (type == "coffee") {
-					this.compileCoffee(bean.path)
-				}
-			} catch(e) {
-				error(new snippet.CommonErrorParser("编译和语法检查发生异常\n"+e))
+			if (type == "js") {
+				this.checkSyntax(bean.path)
+			} else if (type == "coffee") {
+				this.compileCoffee(bean.path)
 			}
 		}
 
