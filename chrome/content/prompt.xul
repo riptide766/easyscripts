@@ -11,7 +11,7 @@
 	<vbox id='container'>	
 		<hbox id='snippet_list'></hbox>
 		<hbox>	
-			<textbox id='inputbox' flex="1" emptytext="press Alt + D to focus"/>
+			<textbox id='inputbox' flex="1" emptytext="press Ctrl + D to focus"/>
 		</hbox>
 	</vbox>
 

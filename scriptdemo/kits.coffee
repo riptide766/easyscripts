@@ -1,7 +1,7 @@
 this.__customMenus =
-	"copyAgent": "复制Agent"
-	"openProfileDirectory": "打开配置文件夹(thunar)"
-	"restartBrowser": "重启"
+	"copyAgent": "小工具.复制Agent"
+	"openProfileDirectory": "小工具.打开配置文件夹(thunar)"
+	"restartBrowser": "小工具.重启"
 
 this.copyAgent = ->
 	clip.simple_copy app.get_agent()

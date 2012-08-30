@@ -12,14 +12,11 @@ easyscript_app =
 		"nsIClipboard": "@mozilla.org/widget/clipboard;1"
 		"nsIProperties": "@mozilla.org/file/directory_service;1"
 
-	ccc: (arg) ->
-		return snippet.lib.ccc(easyscript_app.mapping[arg], arg)
+	ccc: (arg) -> snippet.lib.ccc(easyscript_app.mapping[arg], arg)
 
-	ccs: (arg) ->
-		return snippet.lib.ccs(easyscript_app.mapping[arg], arg)
+	ccs: (arg) -> snippet.lib.ccs(easyscript_app.mapping[arg], arg)
 
-	log: (msg) ->
-		Application.console.log(msg)
+	log: (msg) -> Application.console.log(msg)
 
 	get_title : -> document.title
 
@@ -31,6 +28,7 @@ easyscript_app =
 
 	get_agent : -> window.navigator.userAgent
 
+	ok : (content, msg="操作完成") -> alert "#{content}\n\n#{msg}"
 
 easyscript_fileapp =
 	saveas_text: (txt) ->
@@ -75,5 +73,5 @@ easyscript_xhrapp =
 			alert e
 
 easyscript_testapp =
-	test: -> alert "test"
+	test: -> alert easyscript_app.get_os()
 

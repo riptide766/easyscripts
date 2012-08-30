@@ -3,7 +3,7 @@ EXPORT = [saveSelectedImage2,saveSelectedImage,openSelectionLinks]
 
 this.__customMenus =
 	"getShortUrl": "获取短链接"
-	"copySimpleTxtToClipBoard": "复制简单文字"
+	"copyCodeNoLinenum": "复制没有行号的代码"
 	"getTitleAndUrl": "复制标题和链接"
 	"getTitleAndUrl2HTML":"复制标题和链接(html)"
 	"getTitleAndUrl2RST":"复制标题和链接(rst)"
@@ -17,6 +17,10 @@ this.__customMenus =
 
 google_shortener_api="https://www.googleapis.com/urlshortener/v1/url"
 
+this.copyCodeNoLinenum = ->
+		lines = clip.get_selectedtxt().replace(/(^\s*\d*|\n\s*\d*)/gm,'\n')
+		clip.simple_copy lines
+		app.ok lines
 
 
 this.getShortUrl = ->
@@ -51,7 +55,6 @@ this.getTitleAndUrl = ->
 
 saveSelectedImage2 = ->
 	 links = saveSelectedImage(true)
-
 	 list = links.slice(0, 10).reduce((l, l2) ->  "#{l}\n#{l2}" )
 
 	 if links.length > 0
@@ -71,7 +74,8 @@ saveSelectedImage = (evalFlg) ->
 			link = "http://" + hostname + "/" + link
 		return link
 	return links if evalFlg
-	links.forEach (link) -> fileapp.save_image(link) if link
+	alert links.length
+	fileapp.save_image(link) for link in links if links
 
 openSelectionLinks = (evalFlg) ->
 	source = clip.get_selectionsource()
@@ -80,8 +84,9 @@ openSelectionLinks = (evalFlg) ->
 
 	links = data.map (link) ->
 		link = link.slice(6, - 1)
+		"/"+link if link[0] isnt "/"
 		return "" if (/^\#/.test(link))
-		return "#{hostname}/#{link}" if not /^http(|s)/.test(link)
+		return hostname + link if not /^http(|s)/.test(link)
 		return link
 
 	return links if  evalFlg
@@ -114,10 +119,4 @@ this.showSelectionSource = ->
 		alert "error : #{e}"
 
 this.saveSelectedTxt = -> fileapp.saveas_text clip.get_selectedtxt()
-
-this.copySimpleTxtToClipBoard = ->
-	copytext = clip.get_selectedtxt()
-	clip.set_clipboard
-		"text/unicode": copytext
-		"text/html": copytext
 

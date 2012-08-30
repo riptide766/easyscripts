@@ -13,14 +13,18 @@ Snippet.ns.prompt = {
 
 	handleEvent: function(e) {
 		var tagName = e.target.tagName;
-		var key = String.fromCharCode(e.keyCode);
 		if (e.ctrlKey && e.keyCode == '68') {
-			Snippet.lib.$("inputbox").focus();
-		} else if (tagName == "button") {
-			this.closeDialog(e.target.label.match(/^\d*\s/)[0].trim())
-
-		} else if (tagName = "textbox" && e.keyCode == 13) {
-			this.closeDialog(e.target.value)
+			return Snippet.lib.$("inputbox").focus();
+		}
+		if (tagName == "button") {
+			// 应该是取数字编号作为返回。但为什么呢？ 我已经忘记了，这就是为什么要写注释了!
+			return this.closeDialog(e.target.label.match(/^\d*\s/)[0].trim())
+		}
+		if (tagName = "textbox" && e.keyCode == 13) {
+			return this.closeDialog(e.target.value)
+		}
+		if (e.ctrlKey == false && e.altKey==false && e.shiftKey == false && e.keyCode <= 57 && e.keyCode >= 48 ){
+			this.closeDialog(String.fromCharCode(e.keyCode))
 		}
 	},
 
