@@ -1,7 +1,6 @@
-EXPORT = [easyscript_app,easyscript_fileapp]
+EXPORT = [easyscript_app,easyscript_fileapp,easyscript_xhrapp,easyscript_testapp]
 
 easyscript_app =
-
 	mapping:
 		"mozIJSSubScriptLoader": "@mozilla.org/moz/jssubscript-loader;1"
 		"nsIScriptableUnicodeConverter":"@mozilla.org/intl/scriptableunicodeconverter"
@@ -31,8 +30,8 @@ easyscript_app =
 	get_os : -> Services.appinfo.OS
 
 	get_agent : -> window.navigator.userAgent
-	
-	
+
+
 easyscript_fileapp =
 	saveas_text: (txt) ->
 		filename = txt.slice(0, 10) + ".txt"
@@ -54,4 +53,27 @@ easyscript_fileapp =
 		processor.init(cmd)
 		processor.run(false, args, args.length)
 
+easyscript_xhrapp =
+	send: (url, headers, handler={}, args, method="get", body,jsonflg=false)->
+		req = new XMLHttpRequest()
+		req.open(method, url, true)
+		for key , value of headers
+			req.setRequestHeader(key,value)
+		req.onreadystatechange = (evt) ->
+			if req.readyState == 4
+				if req.status == 200 or req.status == 201
+					responseText = if jsonflg then JSON.parse req.responseText else req.responseText
+					handler(responseText, args) if typeof handler  == "function"
+				else
+					easyscript_app.log "network : #{req.responseText}"
+		req.send(body)
+
+	postjson : (url,headers,body,handler,args) ->
+		try
+			@send(url,headers,handler,args,"POST",JSON.stringify(body),true)
+		catch e
+			alert e
+
+easyscript_testapp =
+	test: -> alert "test"
 

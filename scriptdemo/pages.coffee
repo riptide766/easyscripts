@@ -1,7 +1,8 @@
-EXPORT = [__customMenus,saveSelectedImage2,saveSelectedImage,openSelectionLinks]
+EXPORT = [saveSelectedImage2,saveSelectedImage,openSelectionLinks]
 
 
-__customMenus =
+this.__customMenus =
+	"getShortUrl": "获取短链接"
 	"copySimpleTxtToClipBoard": "复制简单文字"
 	"getTitleAndUrl": "复制标题和链接"
 	"getTitleAndUrl2HTML":"复制标题和链接(html)"
@@ -13,6 +14,20 @@ __customMenus =
 	"openSelectionLinks2": "打开选中链接(正则)"
 	"saveSelectedImage": "下载选中图片"
 	"saveSelectedImage2": "下载选中图片(正则)"
+
+google_shortener_api="https://www.googleapis.com/urlshortener/v1/url"
+
+
+
+this.getShortUrl = ->
+	xhrapp.postjson(google_shortener_api,
+		{"Content-Type": "application/json"},
+		{"longUrl": app.get_url()},
+		(data)->
+			clip.simple_copy(data.id)
+			alert "#{data.id}\n已复制"
+	)
+
 
 this.getTitleAndUrl2HTML = ->
 	clip.set_clipboard
@@ -45,7 +60,7 @@ saveSelectedImage2 = ->
 
 	 re = new RegExp(re,"g")
 	 links.forEach (link) -> re.test link && fileapp.save_image link
-	
+
 saveSelectedImage = (evalFlg) ->
 	source = clip.get_selectionsource()
 	data = source.match(/src=\"[^"]*(gif|ioc|jpg|png)\"/g)
@@ -55,9 +70,7 @@ saveSelectedImage = (evalFlg) ->
 		if not /^http(|s)/.test(link)
 			link = "http://" + hostname + "/" + link
 		return link
-	
 	return links if evalFlg
-		
 	links.forEach (link) -> fileapp.save_image(link) if link
 
 openSelectionLinks = (evalFlg) ->
@@ -86,13 +99,13 @@ this.openSelectionLinks2 = ->
 	if links.length > 0
 		re = prompt("部分数据供参考：\n #{list} \n输入正则...", "")
 		return if not re.trim()
-				
+
 	re = new RegExp(re,"g")
 	checked={}
 	links.forEach (link)->
 		re.test(link)  && !checked[link] && gBrowser.addTab(link)
 		checked[link]=1
-	
+
 
 this.showSelectionSource = ->
 	try
@@ -107,4 +120,4 @@ this.copySimpleTxtToClipBoard = ->
 	clip.set_clipboard
 		"text/unicode": copytext
 		"text/html": copytext
-	
+

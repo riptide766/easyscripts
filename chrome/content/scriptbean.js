@@ -8,25 +8,19 @@ with(window.snippet.lib) {
 
 
 		this.parseExports = function(code) {
-			
-			// 取第一行的EXPORT,解析出数组的部分
+
 			var exports =code.match(/EXPORT\s*=\s*\[.*\]/);
-			if(exports.length>0){
-				exports=exports[0].slice(exports[0].indexOf('[')+1,-1)
-			}else{
-				// TODO throw error
+			if(!exports || exports.length == 0){
+				return ""
 			}
-			
+
+			// 取第一行的EXPORT,解析出数组的部分
+			exports=exports[0].slice(exports[0].indexOf('[')+1,-1)
+
 			// 将数组中的变量foo转换成this.foo=foo的形式
-			var data = exports.split(',').map(function(obj) {
+			return exports.split(',').map(function(obj) {
 				return "this.%1=%1;".replace(/\%1/g, obj.trim())
 			}).join("\n");
-			return data
-		}
-
-		this.parseExports4Coffee = function(code){
-			
-		
 		}
 
 		this.getScript = function() {

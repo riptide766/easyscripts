@@ -1,8 +1,8 @@
-EXPORT = [__customMenus, switchRestartless, getAddonsList]
+EXPORT = [switchRestartless, getAddonsList]
 
-__customMenus =
-	"switchRestartless": "Addons.切换RestartLess扩展开闭状态(输入序号如:1,2)",
-	"getAddonsList": "Addons.复制扩展列表和简单统计",
+this.__customMenus =
+	"switchRestartless": "Addons.切换RestartLess扩展开闭状态(输入序号如:1,2)"
+	"getAddonsList": "Addons.复制扩展列表和简单统计"
 
 getAddonsList = ->
 	Components.utils.import "resource://gre/modules/AddonManager.jsm"
