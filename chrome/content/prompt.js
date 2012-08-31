@@ -1,5 +1,9 @@
 Snippet.ns.prompt = {
 
+	number: "",
+
+	timer: null,
+
 	getArgs: function(key) {
 		return window.arguments[0][key];
 	},
@@ -9,6 +13,16 @@ Snippet.ns.prompt = {
 		this.initShortKey();
 		window.innerHeight = Snippet.lib.$("container").clientHeight
 		window.innerWidth = Snippet.lib.$("container").clientWidth
+	},
+
+	Timer: function(fn, itv) {
+		this.stop = function() {
+			clearTimeout(this.tid)
+		}
+		this.start = function() {
+			this.tid = setTimeout(fn, 500)
+		}
+		return this;
 	},
 
 	handleEvent: function(e) {
@@ -23,8 +37,23 @@ Snippet.ns.prompt = {
 		if (tagName = "textbox" && e.keyCode == 13) {
 			return this.closeDialog(e.target.value)
 		}
-		if (e.ctrlKey == false && e.altKey==false && e.shiftKey == false && e.keyCode <= 57 && e.keyCode >= 48 ){
-			this.closeDialog(String.fromCharCode(e.keyCode))
+		if (e.ctrlKey == false && e.altKey == false && e.shiftKey == false && e.keyCode <= 57 && e.keyCode >= 48) {
+			this.number += String.fromCharCode(e.keyCode);
+			if (this.timer!=null) {
+				this.timer.stop()
+			}
+			document.title = this.number;
+			this.timer = new this.Timer((function(ref) {
+				return function() {
+					ref.closeDialog(ref.number)
+				}
+			} (this)))
+			this.timer.start()
+			return;
+		}
+		if (this.timer) {
+			document.title=this.number=""
+			this.timer.stop()
 		}
 	},
 
