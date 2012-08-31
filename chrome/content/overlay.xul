@@ -15,9 +15,16 @@
 		<menuitem id="snippet"  key="key_snippet" command="cmd_snippet"/>
 	</menupopup>
 
+
 	<!-- 菜单栏-工具菜单 -->
 	<menupopup id="menu_ToolsPopup">
-		<menuitem id="snippet"  key="key_snippet" command="cmd_snippet"/>
+		<menu label="EasyScripts" accesskey="e">
+			<menupopup onpopupshowing="snippet.ui.refreshmenu(event)" >
+				<menuitem key="key_snippet" command="cmd_snippet"/>
+				<menuitem type="checkbox" attr="disable_js_check" command="cmd_snippet_switch_js_check"/>
+				<menuitem type="checkbox" attr="disable_coffee_compile" command="cmd_snippet_switch_coffee_compile"/>
+			</menupopup>
+		</menu>
 	</menupopup>
 
 	<!-- 快捷键 - 调用独立提示窗口  -->
@@ -26,6 +33,8 @@
 	</keyset>
 
 	<commandset>
-		 <command id="cmd_snippet" label="Exec snippit..." accesskey="s" oncommand="new window.snippet.core()"/>
+		 <command id="cmd_snippet" label="打开命令菜单..." accesskey="s" oncommand="new window.snippet.core()"/>
+		 <command id="cmd_snippet_switch_js_check" label="禁用JS检查"  oncommand="window.snippet.lib.switchpref('disable_js_check')"/>
+		 <command id="cmd_snippet_switch_coffee_compile" label="禁用Coffee编译"  oncommand="window.snippet.lib.switchpref('disable_coffee_compile')"/>
 	 </commandset>
 </overlay>

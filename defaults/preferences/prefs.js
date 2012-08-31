@@ -7,4 +7,6 @@ pref("extensions.easyscripts.log_error", "/tmp/easyscript_errorlog");
 pref("extensions.easyscripts.alert_compile_error", false);
 pref("extensions.easyscripts.alert_error", true);
 pref("extensions.easyscripts.script_dir", "Home,easyscripts");
+pref("extensions.easyscripts.disable_coffee_compile", false);
+pref("extensions.easyscripts.disable_js_check", false);
 

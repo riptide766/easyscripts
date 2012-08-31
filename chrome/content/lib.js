@@ -3,6 +3,18 @@ if (!window.snippet) {
 	window.snippet = {}
 }
 
+window.snippet.ui ={
+	refreshmenu : function(event){
+		for(var i =0 ;i < event.originalTarget.childNodes.length; i++){
+			var item = event.originalTarget.childNodes[i]
+			if(item.getAttribute("attr")){
+				item.setAttribute("checked",snippet.lib.getpref(item.getAttribute("attr"),false))
+			}
+		}
+	}
+
+}
+
 window.snippet.lib = {
 	CC: Components.classes,
 	CI: Components.interfaces,
@@ -66,7 +78,11 @@ window.snippet.lib = {
 
 	getcmd: function(cmd) {
 		var process = this.ccc("@mozilla.org/process/util;1", "nsIProcess");
-		process.init(this.getfile(cmd));
+		var file = this.getfile(cmd)
+		if (!file || !file.exists()){
+			this.err(new snippet.CommonErrorParser(cmd+" 不存在"))
+		}
+		process.init(file);
 		return process
 
 	},
@@ -86,6 +102,11 @@ window.snippet.lib = {
 			value = arguments[1]
 			return Application.prefs.getValue(this.PREF_PREFIX + name, value)
 		}
+	},
+
+	switchpref:function(name){
+		var value = this.getpref(name,false);
+		Application.prefs.setValue(this.PREF_PREFIX + name, !value)
 	},
 
 	extendclass: function(subCls, superCls) {

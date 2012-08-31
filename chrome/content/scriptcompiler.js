@@ -17,15 +17,15 @@ with(window.snippet.lib) {
 		}
 
 		this.process = function(bean, type) {
-			if (type == "js") {
+			if (type == "js" && !getpref("disable_js_check",false)) {
 				this.checkSyntax(bean.path)
-			} else if (type == "coffee") {
+			} else if (type == "coffee" && !getpref("disable_coffee_compile",false)) {
 				this.compileCoffee(bean.path)
 			}
 		}
 
 		this.launch = function(cmd) {
-			var processor = getcmd("/bin/sh")
+			var processor = getcmd(cmd_sh)
 			var args = ["-c", cmd]
 			log("launch : cmdstring --> %1", args[1]);
 			processor.run(true, args, args.length)
