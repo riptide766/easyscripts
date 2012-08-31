@@ -9,11 +9,15 @@ with(window.snippet.lib) {
 
 		this.loadScript = function(aScript, scope, charset) {
 			try {
-				log("loadScript ---> %1", aScript.path)
+				var sid = aScript.path
 				var tmpObj = this.evalScript(aScript);
+				log("loadScript ---> %1", sid)
 				for (var key in tmpObj) {
 					scope[key] = tmpObj[key]
-					cache[key] = key
+					if (!cache[sid]) {
+						cache[sid] = {}
+					}
+					cache[sid][key] = key
 				}
 			} catch(e) {
 				log(" NamespacesManager.loadScript ===>%1", e)
@@ -40,11 +44,12 @@ with(window.snippet.lib) {
 
 		this.unloadScript = function(aScript, scope, charset) {
 			try {
-				log("unloadScript ---> %1", aScript.path)
 				var tmpObj = this.evalScript(aScript);
+				var sid = aScript.path
+				log("unloadScript ---> %1", sid)
+				delete cache[sid]
 				for (var key in tmpObj) {
 					delete scope[key]
-					cache = {}
 					log("unloadScript:scope ---> %1", key)
 				}
 			} catch(e) {
@@ -53,11 +58,13 @@ with(window.snippet.lib) {
 		}
 
 		this.extKeyword = function(code) {
-			for (var key in cache) {
-				if (/easyscript\_.*/.test(key)) {
-					var shortKey = key.split("_")[1]
-					var re = new RegExp("([^[0-9a-zA-Z\s\_])" + shortKey + "([^0-9a-zA-Z\s\_])", "g")
-					code = code.replace(re, "$1" + key + "$2")
+			for each(var subcache in cache) {
+				for (var key in subcache) {
+					if (/easyscript\_.*/.test(key)) {
+						var shortKey = key.split("_")[1]
+						var re = new RegExp("([^[0-9a-zA-Z\s\_])" + shortKey + "([^0-9a-zA-Z\s\_])", "g")
+						code = code.replace(re, "$1" + key + "$2")
+					}
 				}
 			}
 			return code
@@ -77,6 +84,10 @@ with(window.snippet.lib) {
 
 		this.getCache = function() {
 			return cache
+		}
+
+		this.clearCache = function() {
+			cache = {}
 		}
 	}
 
@@ -114,6 +125,5 @@ with(window.snippet.lib) {
 		}
 
 	}
-
 }
 
