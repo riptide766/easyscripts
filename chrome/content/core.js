@@ -24,8 +24,11 @@ window.snippet.core = function(evt) {
 			scripts = snippet.scriptHelper.getScripts();
 
 			// 将工具对象导入到全局命名空间window下
+			for each(var script in libs){
+				snippet.nsHelper.processGlobalKey(script)
+			}
 			for each(var script in libs) {
-				snippet.nsHelper.processGlobal(script, window)
+				snippet.nsHelper.processGlobal(script, snippet.global)
 			}
 
 			// 将菜单脚本对象导入命名空间snippet.anonymousscopes下
@@ -47,12 +50,12 @@ window.snippet.core = function(evt) {
 				snippet.scriptmnger.setCompiler(compileHelper)
 
 				snippet.scriptHelper = new snippet.ScriptHelper(snippet.scriptmnger);
-				snippet.nsHelper = new snippet.NamespacesHelper(new snippet.NamespacesManager())
+				snippet.nsHelper = new snippet.NamespacesHelper(new snippet.NamespacesManager("snippet.global."))
 
+				snippet.global={}
 				snippet.anonymousscopes = {}
 				snippet.__init = true;
 			}
-
 		}
 
 		function getScriptDir() {
@@ -68,7 +71,6 @@ window.snippet.core = function(evt) {
 				return file
 			}
 			err(new snippet.CommonErrorParser("没有发现有效的脚本目录"))
-
 		}
 
 		startup()
