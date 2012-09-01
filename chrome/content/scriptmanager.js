@@ -3,14 +3,21 @@ if (!window.snippet) {
 }
 
 with(window.snippet.lib) {
+
+
+
 	// 读取文件目录的工具类
 	window.snippet.ScriptManager = function() {
 
 		var cache = {},
 		baseDir, appDir,
-		compiler = new snippet.ScriptCompiler();
+		compiler = null;
 
-		 this.checkFolder=function(aDir, fileExt) {
+		this.setCompiler = function(arg){
+			compiler = arg
+		}
+
+		this.checkFolder=function(aDir, fileExt) {
 			aDir = aDir? getSubFolder(aDir) : baseDir
 
 			if (aDir.exists() == false) {
@@ -33,6 +40,12 @@ with(window.snippet.lib) {
 				}
 			}
 			return array;
+		}
+
+		function updateHook(bean,ext,type){
+			if (compiler){
+				compiler.process(bean,ext)
+			}
 		}
 
 		this.cleanData = function() {
@@ -60,7 +73,7 @@ with(window.snippet.lib) {
 				var bid = bean.path
 				if (!cache[bid]) {
 					log("new ---> %1", bean.path)
-					compiler.process(bean, ext)
+					updateHook(bean,ext,type)
 					// create  cache entry
 					cache[bid] = {}
 					cache[bid].bean = bean
@@ -72,7 +85,7 @@ with(window.snippet.lib) {
 				}
 				if (cache[bid].stamp < bean.lastModifiedTime) {
 					log("update ---> %1", bean.path)
-					compiler.process(bean, ext)
+					updateHook(bean,ext,type)
 					// update cache entry
 					cache[bid].stamp = bean.lastModifiedTime
 					cache[bid].bean = bean

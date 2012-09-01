@@ -3,40 +3,71 @@ if (!window.snippet) {
 }
 
 with(window.snippet.lib) {
-	window.snippet.ScriptCompiler = function() {
-		var cmd_sh = getpref("cmd_sh", "/bin/sh"),
-		cmd_js = getpref("cmd_js", "/usr/bin/js"),
-		cmd_coffee = getpref("cmd_coffee", "/usr/bin/coffee"),
-		error_log = getpref("log_error", ""),
-		pattern_js = getpref("pattern_compile_js", "");
-		pattern_coffee = getpref("pattern_compile_coffee", "");
-
-		this.compileCoffee = function(path) {
-			var rslt = this.launch(p(pattern_coffee, cmd_coffee, path, error_log))
-			new snippet.CoffeeErrorParser(rslt).check();
-		}
-
+	window.snippet.ScriptCompileHelper = function(list) {
 		this.process = function(bean, type) {
-			if (type == "js" && !getpref("disable_js_check",false)) {
-				this.checkSyntax(bean.path)
-			} else if (type == "coffee" && !getpref("disable_coffee_compile",false)) {
-				this.compileCoffee(bean.path)
+			for each(var processor in list) {
+				processor.process(type, bean)
 			}
-		}
-
-		this.launch = function(cmd) {
-			var processor = getcmd(cmd_sh)
-			var args = ["-c", cmd]
-			log("launch : cmdstring --> %1", args[1]);
-			processor.run(true, args, args.length)
-			return getfilecontent(getfile(error_log));
-		}
-
-		this.checkSyntax = function(path) {
-			var rslt = this.launch(p(pattern_js, cmd_js, path, error_log))
-			new snippet.JsErrorParser(rslt).check();
 		}
 	}
 
+	window.snippet.Compiler = function() {}
+
+	window.snippet.Compiler.prototype.launch = function(cmd) {
+		var processor = getcmd(this.cmd_sh)
+		var args = ["-c", cmd]
+		log("launch : cmdstring --> %1", args[1]);
+		processor.run(true, args, args.length)
+		return getfilecontent(getfile(this.error_log));
+	}
+
+	window.snippet.Compiler.prototype.cmd_sh = getpref("cmd_sh", "/bin/sh")
+
+	window.snippet.Compiler.prototype.error_log = getpref("log_error", "")
+
+	window.snippet.Compiler.prototype.checkExecutableFile = function(cmd) {
+		file = getfile(cmd)
+		if (file.exists() &&  file.isExecutable()) {
+			return file
+		}
+		return null
+	}
+
+	window.snippet.JsCompiler = function() {
+		var cmd = getpref("cmd_js", "/usr/bin/js"),
+		pattern_js = getpref("pattern_compile_js", "");
+
+		this.process = function(key, bean) {
+			if (key != "js" && ! getpref("disable_js_check", false)) {
+				return
+			}
+			var rslt = this.launch(p(pattern_js, cmd, bean.path, this.error_log))
+			new snippet.JsErrorParser(rslt).check();
+		}
+		
+		if(!this.checkExecutableFile(cmd)){
+			err(new snippet.CommonErrorParser(cmd+"不是可执行文件"))
+		}
+	}
+
+	window.snippet.CoffeeCompiler = function() {
+		var cmd = getpref("cmd_coffee", "/usr/bin/coffee"),
+		pattern_coffee = getpref("pattern_compile_coffee", "");
+
+		this.process = function(key, bean) {
+			if (key != "coffee" && ! getpref("disable_coffee_compile", false)) {
+				return
+			}
+			var rslt = this.launch(p(pattern_coffee, cmd, bean.path, this.error_log))
+			new snippet.CoffeeErrorParser(rslt).check();
+		}
+
+		if(!this.checkExecutableFile(cmd)){
+			err(new snippet.CommonErrorParser(cmd+"不是可执行文件"))
+		}
+	}
+
+	extendclass(snippet.JsCompiler, snippet.Compiler);
+	extendclass(snippet.CoffeeCompiler, snippet.Compiler);
 }
 

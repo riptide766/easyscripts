@@ -3,11 +3,12 @@ EXPORT = [saveSelectedImage2,saveSelectedImage,openSelectionLinks]
 
 this.__customMenus =
 	"getShortUrl": "获取短链接"
+	"google_translate": "google翻译"
 	"copyCodeNoLinenum": "复制没有行号的代码"
-	"getTitleAndUrl": "复制标题和链接"
-	"getTitleAndUrl2HTML":"复制标题和链接(html)"
-	"getTitleAndUrl2RST":"复制标题和链接(rst)"
-	"getTitle": "复制标题"
+	"getTitleAndUrl": "标题和链接.复制标题和链接"
+	"getTitleAndUrl2HTML":"标题和链接.复制标题和链接(html)"
+	"getTitleAndUrl2RST":"标题和链接.复制标题和链接(rst)"
+	"getTitle": "标题和链接.复制标题"
 	"showSelectionSource": "查看选中的代码"
 	"saveSelectedTxt": "保存选中的文字"
 	"openSelectionLinks": "打开选中链接"
@@ -16,6 +17,10 @@ this.__customMenus =
 	"saveSelectedImage2": "下载选中图片(正则)"
 
 google_shortener_api="https://www.googleapis.com/urlshortener/v1/url"
+google_translate_api="http://translate.google.cn/?hl=en#en/zh-CN/"
+
+this.google_translate = ->
+	browserapp.open_page_fg google_translate_api+clip.get_selectedtxt() if clip.get_selectedtxt()
 
 this.copyCodeNoLinenum = ->
 		lines = clip.get_selectedtxt().replace(/(^\s*\d*|\n\s*\d*)/gm,'\n')

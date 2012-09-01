@@ -40,9 +40,15 @@ window.snippet.core = function(evt) {
 
 		function initialized() {
 			if (!snippet.__init) {
+				var list = [new snippet.JsCompiler(),new snippet.CoffeeCompiler()]
+				var compileHelper = new snippet.ScriptCompileHelper(list)
+
 				snippet.scriptmnger = new snippet.ScriptManager(getScriptDir());
+				snippet.scriptmnger.setCompiler(compileHelper)
+
 				snippet.scriptHelper = new snippet.ScriptHelper(snippet.scriptmnger);
 				snippet.nsHelper = new snippet.NamespacesHelper(new snippet.NamespacesManager())
+
 				snippet.anonymousscopes = {}
 				snippet.__init = true;
 			}

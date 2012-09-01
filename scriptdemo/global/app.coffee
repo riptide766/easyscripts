@@ -1,4 +1,4 @@
-EXPORT = [easyscript_app,easyscript_fileapp,easyscript_xhrapp,easyscript_testapp]
+EXPORT = [easyscript_app,easyscript_fileapp,easyscript_xhrapp,easyscript_testapp,easyscript_browserapp]
 
 easyscript_app =
 	mapping:
@@ -74,4 +74,8 @@ easyscript_xhrapp =
 
 easyscript_testapp =
 	test: -> alert easyscript_app.get_os()
+
+easyscript_browserapp =
+	open_page_fg : (url) -> gBrowser.selectedTab = gBrowser.addTab url
+	open_page_bg : (url) -> gBrowser.addTab url
 
