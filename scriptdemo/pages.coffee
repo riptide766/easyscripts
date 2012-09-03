@@ -18,6 +18,7 @@ this.__customMenus =
 	"appendTmpFile": "随手记(杂)"
 	"appendFirefoxFile": "随手记(firefox)"
 	"appendLinuxFile": "随手记(linux)"
+	"appendSentenceFile": "随手记(en)"
 
 google_shortener_api="https://www.googleapis.com/urlshortener/v1/url"
 google_translate_api="http://translate.google.cn/?hl=en#en/zh-CN/"
@@ -27,6 +28,9 @@ appendFile = ()->
 	content = "#{app.get_title()}\n#{app.get_url()}    #{new Date()}\n#{clip.get_selectedtxt()}\n\n\n"
 	file = fileapp.get_file.apply(null,arguments)
 	fileapp.append_txt(file, content)
+
+this.appendSentenceFile = ->
+	appendFile("Home",["sentence.txt"])
 
 this.appendTmpFile = ->
 	appendFile("Home",["tmp.txt"])

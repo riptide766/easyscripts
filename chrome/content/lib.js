@@ -50,6 +50,11 @@ window.snippet.lib = {
 		return pattern;
 	},
 
+	background:function(fn){
+		var thread = this.ccs("@mozilla.org/thread-manager;1","nsIThreadManager").newThread(0);
+		thread.dispatch(fn, thread.DISPATCH_NORMAL);
+	},
+
 	getfilecontent: function(file,charset) {
 		var charset = charset ? charset : "UTF-8";
 		var fstream = this.ccc("@mozilla.org/network/file-input-stream;1", "nsIFileInputStream");
