@@ -38,7 +38,7 @@ with(window.snippet.lib) {
 		pattern_js = getpref("pattern_compile_js", "");
 
 		this.process = function(key, bean) {
-			if (key != "js" && ! getpref("disable_js_check", false)) {
+			if (key != "js" ||  getpref("disable_js_check", false)) {
 				return
 			}
 			var rslt = this.launch(p(pattern_js, cmd, bean.path, this.error_log))
@@ -55,7 +55,7 @@ with(window.snippet.lib) {
 		pattern_coffee = getpref("pattern_compile_coffee", "");
 
 		this.process = function(key, bean) {
-			if (key != "coffee" && ! getpref("disable_coffee_compile", false)) {
+			if (key != "coffee" || getpref("disable_coffee_compile", false)) {
 				return
 			}
 			var rslt = this.launch(p(pattern_coffee, cmd, bean.path, this.error_log))
