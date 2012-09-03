@@ -50,11 +50,12 @@ window.snippet.lib = {
 		return pattern;
 	},
 
-	getfilecontent: function(file) {
+	getfilecontent: function(file,charset) {
+		var charset = charset ? charset : "UTF-8";
 		var fstream = this.ccc("@mozilla.org/network/file-input-stream;1", "nsIFileInputStream");
 		var cstream = this.ccc("@mozilla.org/intl/converter-input-stream;1", "nsIConverterInputStream");
 		fstream.init(file, - 1, 0, 0);
-		cstream.init(fstream, "UTF-8", 0, 0);
+		cstream.init(fstream, charset, 0, 0);
 		var str = {}
 		var data = ""
 		var read = 0;

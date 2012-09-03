@@ -15,9 +15,27 @@ this.__customMenus =
 	"openSelectionLinks2": "打开选中链接(正则)"
 	"saveSelectedImage": "下载选中图片"
 	"saveSelectedImage2": "下载选中图片(正则)"
+	"appendTmpFile": "随手记(杂)"
+	"appendFirefoxFile": "随手记(firefox)"
+	"appendLinuxFile": "随手记(linux)"
 
 google_shortener_api="https://www.googleapis.com/urlshortener/v1/url"
 google_translate_api="http://translate.google.cn/?hl=en#en/zh-CN/"
+
+appendFile = ()->
+	return if not clip.get_selectedtxt()
+	content = "#{app.get_title()}\n#{app.get_url()}    #{new Date()}\n#{clip.get_selectedtxt()}\n\n\n"
+	file = fileapp.get_file.apply(null,arguments)
+	fileapp.append_txt(file, content)
+
+this.appendTmpFile = ->
+	appendFile("Home",["tmp.txt"])
+
+this.appendFirefoxFile = ->
+	appendFile("Home",["firefox.txt"])
+
+this.appendLinuxFile = ->
+	appendFile("Home",["linux.txt"])
 
 this.google_translate = ->
 	browserapp.open_page_fg google_translate_api+clip.get_selectedtxt() if clip.get_selectedtxt()
@@ -98,7 +116,7 @@ openSelectionLinks = (evalFlg) ->
 
 	checked={}
 	links.forEach (link) ->
-		gBrowser.addTab link if link && not checked[link]
+		browserapp.open_page_bg link if link && not checked[link]
 		checked[link]=1
 
 this.openSelectionLinks2 = ->
@@ -113,13 +131,13 @@ this.openSelectionLinks2 = ->
 	re = new RegExp(re,"g")
 	checked={}
 	links.forEach (link)->
-		re.test(link)  && !checked[link] && gBrowser.addTab(link)
+		re.test(link)  && !checked[link] && browserapp.open_page_bg link
 		checked[link]=1
 
 
 this.showSelectionSource = ->
 	try
-		alert clip.get_selectionsource()
+		alert clip.get_selectionsource() if clip.get_selectedtxt()
 	catch e
 		alert "error : #{e}"
 

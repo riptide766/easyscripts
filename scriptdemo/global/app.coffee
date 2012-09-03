@@ -11,6 +11,8 @@ easyscript_app =
 		"nsISupportsString": "@mozilla.org/supports-string;1"
 		"nsIClipboard": "@mozilla.org/widget/clipboard;1"
 		"nsIProperties": "@mozilla.org/file/directory_service;1"
+		"nsIConverterOutputStream":"@mozilla.org/intl/converter-output-stream;1"
+		"nsIFileOutputStream":"@mozilla.org/network/file-output-stream;1"
 
 	ccc: (arg) -> snippet.lib.ccc(easyscript_app.mapping[arg], arg)
 
@@ -38,8 +40,9 @@ easyscript_fileapp =
 
 	save_image: (url) -> saveImageURL(url, 0, 0, 0, 1)
 
+	get_file: (path,path2) -> snippet.lib.getfile.apply(null, arguments)
 
-	get_file: (path) ->
+	get_localfile: (path) ->
 		localFile = easyscript_app.ccc("nsILocalFile")
 		localFile.initWithPath(path)
 		localFile
@@ -47,9 +50,28 @@ easyscript_fileapp =
 	exec_cmd: (cmd, args) ->
 		processor = easyscript_app.ccc("nsIProcess")
 		if typeof cmd == "string"
-			cmd = easyscript_fileapp.get_file(cmd)
+			cmd = easyscript_fileapp.get_get_localfile(cmd)
 		processor.init(cmd)
 		processor.run(false, args, args.length)
+
+	FILE_APPEND:  0x02 | 0x10
+
+	append_txt:(file,content) ->
+		return if not file
+		file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0o666) if not file.exists()
+		@write_file(file, content, @FILE_APPEND)
+
+	read_file:(path) -> snippet.lib.getfilecontent(path)
+	
+	write_file:(file,content,type,permission=0o666,charset="UTF-8") ->
+		foStream = easyscript_app.ccc "nsIFileOutputStream"
+		foStream.init(file, type , permission, 0)
+		converter = easyscript_app.ccc "nsIConverterOutputStream"
+		converter.init(foStream, charset, 0, 0)
+		converter.writeString(content)
+		converter.close()
+
+
 
 easyscript_xhrapp =
 	send: (url, headers, handler={}, args, method="get", body,jsonflg=false)->
