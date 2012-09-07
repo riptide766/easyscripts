@@ -13,11 +13,16 @@ window.snippet.core = (function() {
 	function init(evt) {
 		with(window.snippet.lib) {
 
-			this.popup = function() {
+			this.popup = function(sname) {
 				initialize()
 
 				// 启动菜单界面
-				new snippet.Menus(snippet.anonymousscopes)
+				new snippet.Menus(snippet.anonymousscopes,function(scopes){
+					if(sname &&  scopes[sname]){
+						return {sname:scopes[sname]}
+					}
+					return scopes;
+				})
 
 			}
 

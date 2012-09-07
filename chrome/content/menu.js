@@ -5,9 +5,12 @@ if (!window.snippet) {
 }
 
 with(window.snippet.lib) {
-	window.snippet.Menus = function Menus(scopes) {
+	window.snippet.Menus = function Menus(scopes, filter) {
 		var _scope = this;
 		var content = ""
+		if(filter && typeof filter == "function"){
+		    scopes = filter(scopes);
+		}
 		init(function(rootItem) {
 			for each(var scope in scopes) {
 				for (var key in scope.__customMenus) {
