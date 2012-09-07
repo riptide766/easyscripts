@@ -12,7 +12,13 @@ easyscript_clip =
 		easyscript_app.ccc("nsIClipboardHelper").copyString(txt)
 	
 	get_selectedtxt: ->
-		return content.getSelection().toString()
+		elm = easyscript_app.get_active_elm()
+		localname = if elm then elm.localName else""
+		if ['textarea', 'input'].indexOf(localname) >= 0
+			rslt = elm.value.substring(elm.selectionStart, elm.selectionEnd)
+		else if ['html','body'].indexOf(localname) >= 0
+			rslt = content.getSelection().toString()
+		return rslt
 
 
 	set_clipboard: (data) ->

@@ -2,23 +2,24 @@ EXPORT = [saveSelectedImage2,saveSelectedImage,openSelectionLinks]
 
 
 this.__customMenus =
-	"getShortUrl": "获取短链接"
 	"google_translate": "google翻译"
+	"appendTmpFile": "随手记(杂)"
+	"appendFirefoxFile": "随手记(firefox)"
+	"appendLinuxFile": "随手记(linux)"
+	"appendSentenceFile": "随手记(en)"
+	"getShortUrl": "获取短链接"
+	"replaceSpace":"复制并替换半角空格(\\B\\ \\B)"
+	"saveSelectedTxt": "保存选中的文字"
+	"showSelectionSource": "查看选中的代码"
 	"copyCodeNoLinenum": "复制没有行号的代码"
 	"getTitleAndUrl": "标题和链接.复制标题和链接"
 	"getTitleAndUrl2HTML":"标题和链接.复制标题和链接(html)"
 	"getTitleAndUrl2RST":"标题和链接.复制标题和链接(rst)"
 	"getTitle": "标题和链接.复制标题"
-	"showSelectionSource": "查看选中的代码"
-	"saveSelectedTxt": "保存选中的文字"
 	"openSelectionLinks": "打开选中链接"
 	"openSelectionLinks2": "打开选中链接(正则)"
 	"saveSelectedImage": "下载选中图片"
 	"saveSelectedImage2": "下载选中图片(正则)"
-	"appendTmpFile": "随手记(杂)"
-	"appendFirefoxFile": "随手记(firefox)"
-	"appendLinuxFile": "随手记(linux)"
-	"appendSentenceFile": "随手记(en)"
 
 google_shortener_api="https://www.googleapis.com/urlshortener/v1/url"
 google_translate_api="http://translate.google.cn/?hl=en#en/zh-CN/"
@@ -49,6 +50,11 @@ this.copyCodeNoLinenum = ->
 		clip.simple_copy lines
 		app.ok lines
 
+this.replaceSpace = ->
+	txt = clip.get_selectedtxt().replace(/\B\ \B/gm,"　")
+	clip.simple_copy(txt)
+	app.ok(txt)
+	
 
 this.getShortUrl = ->
 	xhrapp.postjson(google_shortener_api,

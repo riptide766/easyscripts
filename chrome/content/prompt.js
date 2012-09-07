@@ -39,7 +39,7 @@ Snippet.ns.prompt = {
 		}
 		if (e.ctrlKey == false && e.altKey == false && e.shiftKey == false && e.keyCode <= 57 && e.keyCode >= 48) {
 			this.number += String.fromCharCode(e.keyCode);
-			if (this.timer!=null) {
+			if (this.timer != null) {
 				this.timer.stop()
 			}
 			document.title = this.number;
@@ -52,7 +52,7 @@ Snippet.ns.prompt = {
 			return;
 		}
 		if (this.timer) {
-			document.title=this.number=""
+			document.title = this.number = ""
 			this.timer.stop()
 		}
 	},

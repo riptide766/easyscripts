@@ -42,7 +42,7 @@ with(window.snippet.lib) {
 			this.file = errorinfos[0]
 			this.linenum = errorinfos[1]
 			this.message = error
-			this.error= SyntaxError
+			this.error = SyntaxError
 		}
 	}
 
@@ -54,25 +54,25 @@ with(window.snippet.lib) {
 			this.linenum = error2.replace(/.*line\ (\d*).*/g, "$1");
 			this.file = error2.replace(/.*In\ ([^,]*),.*/g, "$1");
 			this.message = error
-			this.error= SyntaxError
+			this.error = SyntaxError
 		}
 	}
 
 	window.snippet.CommonErrorParser = function(error) {
-		if(error){
+		if (error) {
 			this.hasError = true;
-			this.file=null
-			this.linenum=null
-			this.message=error
+			this.file = null
+			this.linenum = null
+			this.message = error
 		}
 
-		this.getFile= function(){
+		this.getFile = function() {
 			return ""
 		}
 
-		this.msg_prefix =  "easyscript: "
+		this.msg_prefix = "easyscript: "
 	}
-	
+
 	extendclass(snippet.JsErrorParser, snippet.ErrorParser);
 	extendclass(snippet.CoffeeErrorParser, snippet.ErrorParser);
 	extendclass(snippet.CommonErrorParser, snippet.ErrorParser);

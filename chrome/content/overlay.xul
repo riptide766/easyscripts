@@ -24,6 +24,7 @@
 				<!--<menuitem command="cmd_snippet_refresh_scripts"/>-->
 				<menuitem type="checkbox" attr="disable_js_check" command="cmd_snippet_switch_js_check"/>
 				<menuitem type="checkbox" attr="disable_coffee_compile" command="cmd_snippet_switch_coffee_compile"/>
+				<menuitem type="checkbox" attr="alert_cmd_nowhere" command="cmd_snippet_alert_cmd_nowhere"/>
 			</menupopup>
 		</menu>
 	</menupopup>
@@ -34,9 +35,9 @@
 	</keyset>
 
 	<commandset>
-		 <command id="cmd_snippet" label="打开命令菜单..." accesskey="s" oncommand="snippet.main.popup()"/>
+		 <command id="cmd_snippet" label="打开命令菜单..." accesskey="s" oncommand="snippet.core.getInstance()?snippet.core.getInstance().popup():''"/>
 		 <command id="cmd_snippet_switch_js_check" label="禁用JS检查"  oncommand="window.snippet.lib.switchpref('disable_js_check')"/>
 		 <command id="cmd_snippet_switch_coffee_compile" label="禁用Coffee编译"  oncommand="window.snippet.lib.switchpref('disable_coffee_compile')"/>
-		 <!--<command id="cmd_snippet_refresh_scripts" label="刷新所有脚本"  oncommand="window.snippet.lib.switchpref('disable_coffee_compile')"/>-->
+		 <command id="cmd_snippet_alert_cmd_nowhere" label="命令不存在时报错"  oncommand="window.snippet.lib.switchpref('alert_cmd_nowhere')"/>
 	 </commandset>
 </overlay>

@@ -3,15 +3,15 @@ if (!window.snippet) {
 	window.snippet = {}
 }
 
-window.snippet.ui ={
-	refreshmenu : function(event){
-		for(var i =0 ;i < event.originalTarget.childNodes.length; i++){
+window.snippet.ui = {
+	refreshmenu: function(event) {
+		for (var i = 0; i < event.originalTarget.childNodes.length; i++) {
 			var item = event.originalTarget.childNodes[i]
-			if(item.getAttribute("attr")){
-				item.setAttribute("checked",snippet.lib.getpref(item.getAttribute("attr"),false))
+			if (item.getAttribute("attr")) {
+				item.setAttribute("checked", snippet.lib.getpref(item.getAttribute("attr"), false))
 			}
 		}
-	}
+	},
 
 }
 
@@ -35,7 +35,7 @@ window.snippet.lib = {
 	err: function err(error) {
 		try {
 			throw error.getError();
-		}finally {
+		} finally {
 			if (this.getpref("alert_error", "false")) {
 				toJavaScriptConsole();
 			}
@@ -50,13 +50,13 @@ window.snippet.lib = {
 		return pattern;
 	},
 
-	background:function(fn){
-		var thread = this.ccs("@mozilla.org/thread-manager;1","nsIThreadManager").newThread(0);
+	background: function(fn) {
+		var thread = this.ccs("@mozilla.org/thread-manager;1", "nsIThreadManager").newThread(0);
 		thread.dispatch(fn, thread.DISPATCH_NORMAL);
 	},
 
-	getfilecontent: function(file,charset) {
-		var charset = charset ? charset : "UTF-8";
+	getfilecontent: function(file, charset) {
+		var charset = charset ? charset: "UTF-8";
 		var fstream = this.ccc("@mozilla.org/network/file-input-stream;1", "nsIFileInputStream");
 		var cstream = this.ccc("@mozilla.org/intl/converter-input-stream;1", "nsIConverterInputStream");
 		fstream.init(file, - 1, 0, 0);
@@ -85,8 +85,8 @@ window.snippet.lib = {
 	getcmd: function(cmd) {
 		var process = this.ccc("@mozilla.org/process/util;1", "nsIProcess");
 		var file = this.getfile(cmd)
-		if (!file || !file.exists()){
-			this.err(new snippet.CommonErrorParser(cmd+" 不存在"))
+		if (!file || ! file.exists()) {
+			this.err(new snippet.CommonErrorParser(cmd + " 不存在"))
 		}
 		process.init(file);
 		return process
@@ -110,9 +110,9 @@ window.snippet.lib = {
 		}
 	},
 
-	switchpref:function(name){
-		var value = this.getpref(name,false);
-		Application.prefs.setValue(this.PREF_PREFIX + name, !value)
+	switchpref: function(name) {
+		var value = this.getpref(name, false);
+		Application.prefs.setValue(this.PREF_PREFIX + name, ! value)
 	},
 
 	extendclass: function(subCls, superCls) {

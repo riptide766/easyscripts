@@ -30,6 +30,8 @@ easyscript_app =
 
 	get_agent : -> window.navigator.userAgent
 
+	get_active_elm: ->  content.document.activeElement
+
 	ok : (content, msg="操作完成") -> alert "#{content}\n\n#{msg}"
 
 easyscript_fileapp =
