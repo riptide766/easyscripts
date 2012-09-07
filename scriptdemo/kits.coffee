@@ -1,4 +1,6 @@
-this.__customMenus =
+EXPORT = [__customMenus]
+
+__customMenus =
 	"copyAgent": "小工具.复制Agent"
 	"openProfileDirectory": "小工具.打开配置文件夹(thunar)"
 	"restartBrowser": "小工具.重启"
