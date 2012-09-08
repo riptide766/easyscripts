@@ -10,7 +10,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="easyscripts@mattmonkey"
                    em:name="easyscripts"
-				   em:version="0.1"
+				   em:version="0.2"
                    em:creator="mattmonkey"
                    em:description="javascript和coffeescript写firefox脚本"
 				   em:homepageURL="https://github.com/riptide766/easyscripts">
