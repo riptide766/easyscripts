@@ -15,11 +15,7 @@ window.addEventListener("load", Snippet, false);
 // ¹¤¾ß¿â
 Snippet.lib = {
 	css: Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
-	PAGE_WELCOME: "http://mattmonkey.github.com/Snippet/#t_releasenote",
 	PREF_PREFIX: "extensions.handysearch.",
-	PAGE_RELEASE_LOG: "http://mattmonkey.github.com/Snippet/",
-	PAGE_BETA_LOG: "http://mattmonkey.github.com/Snippet/",
-	ADDON_ID: "easyscripts@mattmonkey",
 	ADDON_NAME: "easyscript",
 	TLDS: Components.classes["@mozilla.org/network/effective-tld-service;1"].getService(Components.interfaces.nsIEffectiveTLDService),
 	$: function $(id) {
@@ -118,17 +114,6 @@ Snippet.lib = {
 			if (node) node.insertBefore(object, node.firstChild)
 		}
 		return object
-	},
-
-	openPage: function openPage(val, flg, delay) {
-		setTimeout(function() {
-			if (flg) {
-				gBrowser.selectedTab = gBrowser.addTab(val);
-			} else {
-				gBrowser.loadURI(val);
-			}
-		},
-		delay ? delay: 0)
 	},
 
 	$GetOS : function(arg){

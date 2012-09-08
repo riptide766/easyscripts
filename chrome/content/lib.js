@@ -19,6 +19,9 @@ window.snippet.lib = {
 	CC: Components.classes,
 	CI: Components.interfaces,
 	PREF_PREFIX: "extensions.easyscripts.",
+	PAGE_WELCOME: "http://riptide766.github.com/ubuntu-notes/books/easyscripts/easyscripts.html",
+	ADDON_ID: "easyscripts@mattmonkey",
+	PAGE_RELEASE: "http://riptide766.github.com/ubuntu-notes/books/easyscripts/easyscripts_usage.html",
 
 	ccc: function(contract, inter) {
 		return this.CC[contract].createInstance(this.CI[inter]);
@@ -110,6 +113,10 @@ window.snippet.lib = {
 		}
 	},
 
+	setpref: function(name,value) {
+		Application.prefs.setValue(this.PREF_PREFIX + name,  value)
+	},
+
 	switchpref: function(name) {
 		var value = this.getpref(name, false);
 		Application.prefs.setValue(this.PREF_PREFIX + name, ! value)
@@ -125,5 +132,50 @@ window.snippet.lib = {
 		subCls.supr = superCls;
 	},
 
+	checkfirstrun: function() {
+		// 首次安装打开帮助说明
+		var flg = this.getpref("firstrun", null);
+		if (!flg) {
+			this.openpage(this.PAGE_WELCOME, true, 3000);
+			this.setpref("firstrun", true);
+		}
+	},
+	
+	/**
+	 * val 网址
+	 * flg 新标签或当前标签
+	 * delay 打开时的延迟
+	 */
+	openpage: function(val, flg, delay) {
+		setTimeout(function() {
+			if (flg) {
+				gBrowser.selectedTab = gBrowser.addTab(val);
+			} else {
+				gBrowser.loadURI(val);
+			}
+		},
+		delay ? delay: 0)
+	},
+
+	checkversion: function() {
+		var that = this;
+		Components.utils.import("resource://gre/modules/AddonManager.jsm");
+		AddonManager.getAddonByID(this.ADDON_ID, function(addon) {
+			try {
+				Components.utils.import("resource://gre/modules/AddonManager.jsm");
+				Components.utils.import("resource://gre/modules/Services.jsm");
+				var vc = Services.vc,
+				curtVersion = addon.version,
+				oldversion = that.getpref("version","0.1");
+				// https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIVersionComparator
+				if (vc.compare(curtVersion, oldversion) > 0) {
+					that.openpage(that.PAGE_RELEASE, true, 3000)
+					that.setpref("version", curtVersion);
+				}
+			} catch(e) {
+				alert(e)
+			}
+		})
+	},
 }
 

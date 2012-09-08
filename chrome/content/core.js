@@ -99,6 +99,8 @@ window.snippet.core = (function() {
 	var initializeprocess = {
 		run: function() {
 			window.snippet.core.getInstance()
+			window.snippet.lib.checkfirstrun()
+			window.snippet.lib.checkversion()
 		}
 	}
 	// 最新版的nightly使用线程不能共享对象了 9/7
